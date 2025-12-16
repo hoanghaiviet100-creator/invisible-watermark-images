@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>QA</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding-top: 80px;
+        background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+        overflow: hidden;
+    }
+
+    h1 {
+        margin-bottom: 40px;
+        transition: 0.3s;
+    }
+
+    button {
+        padding: 14px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        margin: 10px;
+        transition: 0.3s;
+    }
+
+    #yes {
+        background: #ff4d6d;
+        color: white;
+    }
+
+    #no {
+        background: #ccc;
+        position: absolute;
+    }
+
+    #soft {
+        display: none;
+        background: #ff6f91;
+        color: white;
+    }
+
+    .heart {
+        position: absolute;
+        font-size: 22px;
+        animation: fly 2s forwards;
+    }
+
+    @keyframes fly {
+        from { opacity: 1; transform: translateY(0) scale(1); }
+        to   { opacity: 0; transform: translateY(-120px) scale(1.5); }
+    }
+</style>
+</head>
+
+<body>
+
+<h1 id="text">Bạn có thích tui không?:3</h1>
+
+<button id="yes">Có</button>
+<button id="no">Không</button>
+<button id="soft">còn tớ thì vẫn thích cậu :))</button>
+
+<!-- NHẠC -->
+<audio id="bgm" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    const yes = document.getElementById("yes");
+    const no = document.getElementById("no");
+    const soft = document.getElementById("soft");
+    const text = document.getElementById("text");
+    const bgm = document.getElementById("bgm");
+
+    let noCount = 0;
+    let musicStarted = false;
+
+    function startMusic() {
+        if (musicStarted) return;
+        musicStarted = true;
+        bgm.volume = 0.4;
+        bgm.play().catch(() => {});
+    }
+
+    function heart() {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.innerHTML = "💖";
+        h.style.left = Math.random() * window.innerWidth + "px";
+        h.style.top = window.innerHeight - 30 + "px";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2000);
+    }
+
+    yes.onclick = () => {
+        startMusic();
+        text.textContent = "ừm cám ơn hêu nhớ, tớ cũng z:33 💖";
+        yes.style.display = "none";
+        no.style.display = "none";
+        for (let i = 0; i < 15; i++) heart();
+    };
+
+    no.onclick = () => {
+        startMusic();
+        noCount++;
+
+        if (noCount >= 20) {
+            text.textContent = "Thôi được rồi :< , vậy để khi khác nhó >:";
+            yes.style.display = "none";
+            no.style.display = "none";
+            soft.style.display = "inline-block";
+            return;
+        }
+
+        no.style.left = Math.random() * (window.innerWidth - 120) + "px";
+        no.style.top = Math.random() * (window.innerHeight - 60) + "px";
+
+        yes.style.transform = `scale(${1 + noCount * 0.04})`;
+    };
+
+    soft.onclick = () => location.reload();
+</script>
+
+</body>
+</html>
